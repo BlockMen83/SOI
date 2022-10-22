@@ -1,6 +1,6 @@
-with open("paragliding-sub3-attempt2.txt") as txt :
+with open("paragliding-sub3-attempt3.txt") as txt :
     lignes = txt.read().splitlines()
-nombre_lignes = lignes[0]*3
+nombre_lignes = len(lignes)-1
 lignes.pop(0)
 
 open('answers.txt', 'w').close()
@@ -38,21 +38,23 @@ for x in lignes :
         NextCountNumber -= 1
     elif NextCountNumber == 1 :
         heights = disassemble_string(x)
-        comparison = lengths[0]
+        comparison = 0
         distances = []
-        for x in range(len(heights)-1) :
-            if x == 0 :
-                distances.append("0")
-                continue
-            if heights[x] > heights[x-1] and heights[x] > heights[x+1] :
-                if lengths[x] - lengths[0] > abs(lengths[len(lengths)-1] - lengths[x]) :
-                    distances.append(str(abs(lengths[x] - lengths[0])))
-                else : 
-                    distances.append(str(abs(lengths[len(lengths)-1] - lengths[x])))
-                comparison = lengths[len(lengths)-1]
-                continue
-            distances.append(str(abs(lengths[x]-comparison)))
-        distances.append(str(abs(lengths[len(lengths)-1]-comparison)))
+        for x in range(len(heights)) :
+            y = x
+            z = x
+            while lengths[y] != lengths[0] :
+                if heights[y] < heights[y-1] : 
+                    break
+                y -= 1
+            while lengths[z] != lengths[len(lengths)-1] :
+                if heights[z] < heights[z+1] : 
+                    break
+                z += 1
+            if abs(lengths[x] -lengths[z]) > abs(lengths[x] -lengths[y]) :
+                distances.append(str(abs(lengths[x] - lengths[z])))
+            else : 
+                distances.append(str(abs(lengths[x] - lengths[y])))
         distances = " ".join(distances)
         with open('answers.txt', 'a') as answers:
             answers.write(f"Case #{str(counter)}: {distances}")
